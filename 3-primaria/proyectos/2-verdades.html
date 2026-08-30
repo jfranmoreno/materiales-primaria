@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>2 Verdades y 1 Mentira - Juego Interactivo de Aula</title>
+  
+  <!-- Fuentes legibles y amigables para niños -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       VARIABLES Y PALETA DE COLOR (PASTEL CONTRASTADO Y ESCOLAR)
+       ========================================================================== */
+    :root {
+      --bg-page: #fdfcf7;
+      --paper-line: #d8e5f2;
+      --paper-margin: #ff7675;
+      
+      --color-primary: #38bdf8;
+      --color-primary-dark: #0284c7;
+      
+      --badge-a-bg: #ff6b8b;
+      --badge-a-shadow: #d83a5f;
+      --badge-b-bg: #20bf6b;
+      --badge-b-shadow: #148f4e;
+      --badge-c-bg: #f7b731;
+      --badge-c-shadow: #cf8a0c;
+
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-hover: #f8fafc;
+      
+      --success-color: #2ed573;
+      --success-light: #e8fbf0;
+      --danger-color: #ff4757;
+      --danger-light: #ffebee;
+      --truth-color: #3b82f6;
+      --truth-light: #eff6ff;
+
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      --shadow-button: 0 6px 0 rgba(0, 0, 0, 0.15);
+      
+      --border-radius-xl: 24px;
+      --border-radius-lg: 18px;
+      --border-radius-md: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Nunito', 'Quicksand', system-ui, sans-serif;
+      background-color: var(--bg-page);
+      /* Patrón de Libreta de Cuaderno Escolar */
+      background-image: 
+        linear-gradient(var(--paper-line) 1.5px, transparent 1.5px),
+        linear-gradient(90deg, var(--paper-margin) 2.5px, transparent 2.5px);
+      background-size: 100% 38px, 100% 100%;
+      background-position: 0 0, 75px 0;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       BARRA SUPERIOR DE CONTROL PARA EL AULA
+       ========================================================================== */
+    .top-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 3px solid #e2e8f0;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-pill {
+      background-color: #38ef7d;
+      background-image: linear-gradient(135deg, #4dd0e1, #26c6da);
+      color: #042f36;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      padding: 6px 18px;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(38, 198, 218, 0.35);
+      letter-spacing: -0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Botones táctiles de control (Grandes para monitor táctil) */
+    .btn-tool {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 10px 18px;
+      border-radius: var(--border-radius-md);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      background: #f1f5f9;
+      color: #334155;
+      box-shadow: 0 3px 0 #cbd5e1;
+      min-height: 48px;
+    }
+
+    .btn-tool:hover {
+      background: #e2e8f0;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 #94a3b8;
+    }
+
+    .btn-tool:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #94a3b8;
+    }
+
+    .btn-tool.primary {
+      background: #3b82f6;
+      color: white;
+      box-shadow: 0 4px 0 #1d4ed8;
+    }
+    .btn-tool.primary:hover {
+      background: #2563eb;
+      box-shadow: 0 6px 0 #1e40af;
+    }
+
+    .btn-tool.success {
+      background: #10b981;
+      color: white;
+      box-shadow: 0 4px 0 #047857;
+    }
+
+    .btn-tool.warning {
+      background: #f59e0b;
+      color: white;
+      box-shadow: 0 4px 0 #b45309;
+    }
+
+    /* ==========================================================================
+       CONTENEDOR PRINCIPAL Y VISTA DEL JUEGO
+       ========================================================================== */
+    .app-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 60px 85px; /* Margen izquierdo respetando la línea roja */
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Panel de Estado / Puntuación de Clase */
+    .scoreboard-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border-radius: var(--border-radius-lg);
+      padding: 14px 20px;
+      border: 3px solid #e2e8f0;
+      box-shadow: var(--shadow-sm);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .round-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #0284c7;
+      background: #e0f2fe;
+      padding: 8px 16px;
+      border-radius: 50px;
+      flex-shrink: 0;
+    }
+
+    .category-badge {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #475569;
+      text-align: center;
+      flex: 1;
+    }
+
+    .teams-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .team-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    /* Colores para hasta 6 Equipos */
+    .team-red { background: #ffe4e6; color: #e11d48; }
+    .team-red.active { border-color: #e11d48; box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.25); transform: scale(1.05); }
+
+    .team-blue { background: #dbeafe; color: #1d4ed8; }
+    .team-blue.active { border-color: #1d4ed8; box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.25); transform: scale(1.05); }
+
+    .team-green { background: #dcfce7; color: #15803d; }
+    .team-green.active { border-color: #15803d; box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.25); transform: scale(1.05); }
+
+    .team-yellow { background: #fef9c3; color: #a16207; }
+    .team-yellow.active { border-color: #a16207; box-shadow: 0 0 0 3px rgba(161, 98, 7, 0.25); transform: scale(1.05); }
+
+    .team-purple { background: #f3e8ff; color: #7e22ce; }
+    .team-purple.active { border-color: #7e22ce; box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.25); transform: scale(1.05); }
+
+    .team-orange { background: #ffedd5; color: #c2410c; }
+    .team-orange.active { border-color: #c2410c; box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.25); transform: scale(1.05); }
+
+    .team-score {
+      background: white;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 1.05rem;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Temporizador Visual */
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 900;
+      font-size: 1.15rem;
+      background: #fef3c7;
+      color: #b45309;
+      padding: 6px 14px;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+    .timer-badge.urgent {
+      background: #fee2e2;
+      color: #dc2626;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.08); }
+    }
+
+    /* ENCABEZADO DE LA PREGUNTA */
+    .question-banner {
+      background: white;
+      border-radius: var(--border-radius-xl);
+      padding: 24px 30px;
+      border: 3px solid #e2e8f0;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .question-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .question-subtitle {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ==========================================================================
+       TARJETAS DE OPCIONES (A, B, C) - GRANDES Y TÁCTILES
+       ========================================================================== */
+    .cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .statement-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius-xl);
+      padding: 20px 24px;
+      border: 4px solid var(--card-border);
+      box-shadow: var(--shadow-md);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+      min-height: 110px;
+    }
+
+    .statement-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: #cbd5e1;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .statement-card:active {
+      transform: translateY(2px) scale(0.99);
+    }
+
+    /* Letras 3D Redondeadas (A, B, C) */
+    .letter-badge-3d {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .letter-a {
+      background: linear-gradient(145deg, #ff7597, #ff4b72);
+      box-shadow: 0 6px 0 var(--badge-a-shadow), 0 10px 14px rgba(255, 75, 114, 0.4);
+    }
+    .letter-b {
+      background: linear-gradient(145deg, #38ef7d, #11998e);
+      box-shadow: 0 6px 0 var(--badge-b-shadow), 0 10px 14px rgba(17, 153, 142, 0.4);
+    }
+    .letter-c {
+      background: linear-gradient(145deg, #fbc531, #e1b12c);
+      box-shadow: 0 6px 0 var(--badge-c-shadow), 0 10px 14px rgba(225, 177, 44, 0.4);
+    }
+
+    .statement-text {
+      font-size: 1.55rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #1e293b;
+      user-select: text;
+    }
+
+    .card-actions-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    /* Botón de Síntesis de Voz (Lectura en voz alta) */
+    .btn-speak {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #64748b;
+      transition: all 0.15s ease;
+      box-shadow: 0 3px 0 #cbd5e1;
+    }
+
+    .btn-speak:hover {
+      background: #e0f2fe;
+      color: #0284c7;
+      border-color: #38bdf8;
+      transform: scale(1.08);
+    }
+
+    .btn-speak:active {
+      transform: scale(0.95);
+    }
+
+    /* Estados de Respuesta: Revelación */
+    .statement-card.is-lie {
+      border-color: var(--danger-color);
+      background-color: var(--danger-light);
+      animation: lieWobble 0.6s ease;
+    }
+
+    .statement-card.is-lie .letter-badge-3d {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    .statement-card.is-truth {
+      border-color: var(--success-color);
+      background-color: var(--success-light);
+    }
+
+    .badge-result {
+      font-size: 1.15rem;
+      font-weight: 900;
+      padding: 8px 16px;
+      border-radius: 50px;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .statement-card.revealed .badge-result {
+      display: flex;
+    }
+
+    .badge-result.lie-found {
+      background: #ef4444;
+      color: white;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+    }
+
+    .badge-result.truth-found {
+      background: #10b981;
+      color: white;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    @keyframes lieWobble {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px) rotate(-1deg); }
+      40%, 80% { transform: translateX(8px) rotate(1deg); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.6); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* EXPLICACIÓN PEDAGÓGICA TRAS REVELAR */
+    .feedback-banner {
+      background: #f8fafc;
+      border-left: 8px solid #3b82f6;
+      border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
+      padding: 18px 24px;
+      margin-top: 10px;
+      display: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .feedback-banner.show {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .feedback-title {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .feedback-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    /* BARRA DE NAVEGACIÓN INFERIOR */
+    .bottom-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-nav {
+      font-size: 1.35rem;
+      font-weight: 900;
+      padding: 16px 32px;
+      border-radius: var(--border-radius-xl);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+      min-height: 64px;
+      min-width: 180px;
+      justify-content: center;
+    }
+
+    .btn-prev {
+      background: #f1f5f9;
+      color: #475569;
+      box-shadow: 0 6px 0 #cbd5e1;
+    }
+    .btn-prev:hover {
+      background: #e2e8f0;
+      transform: translateY(-2px);
+    }
+
+    .btn-next {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      box-shadow: 0 6px 0 #047857, 0 10px 18px rgba(16, 185, 129, 0.35);
+    }
+    .btn-next:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-2px);
+    }
+
+    .btn-reveal {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      box-shadow: 0 6px 0 #b45309, 0 10px 18px rgba(245, 158, 11, 0.35);
+    }
+
+    .btn-nav:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+
+    /* ==========================================================================
+       MODALES (IMPORTAR JSON, CREAR PREGUNTA, AYUDA)
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-card {
+      background: white;
+      width: 100%;
+      max-width: 680px;
+      border-radius: var(--border-radius-xl);
+      border: 4px solid #cbd5e1;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 20px 26px;
+      background: #f8fafc;
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-close-modal {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .btn-close-modal:hover {
+      background: #cbd5e1;
+    }
+
+    .modal-body {
+      padding: 24px 26px;
+      overflow-y: auto;
+      font-size: 1.15rem;
+      color: #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-weight: 800;
+      color: #1e293b;
+      font-size: 1.1rem;
+    }
+
+    .form-input {
+      font-family: inherit;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-radius: var(--border-radius-md);
+      border: 2px solid #cbd5e1;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .option-form-card {
+      background: #f8fafc;
+      padding: 14px 18px;
+      border-radius: var(--border-radius-md);
+      border: 2px dashed #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .radio-lie-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      color: #e11d48;
+      cursor: pointer;
+      font-size: 1.05rem;
+    }
+
+    .modal-footer {
+      padding: 16px 26px;
+      background: #f8fafc;
+      border-top: 2px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* Mensajes flotantes (Toasts) */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #1e293b;
+      color: white;
+      padding: 14px 22px;
+      border-radius: var(--border-radius-md);
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .toast.success { background: #059669; }
+    .toast.error { background: #dc2626; }
+
+    /* Canvas para Fuegos Artificiales / Confeti */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 150;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ==========================================================================
+       PANTALLA DE CONFIGURACIÓN INICIAL DEL JUEGO (REDUCIDA Y ADAPTADA)
+       ========================================================================== */
+    .setup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .setup-card {
+      background: white;
+      border: 3px solid #cbd5e1;
+      border-radius: var(--border-radius-xl);
+      padding: 26px 30px;
+      max-width: 650px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .setup-header {
+      text-align: center;
+    }
+
+    .setup-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: #0284c7;
+      margin-bottom: 4px;
+    }
+
+    .setup-desc {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .setup-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .setup-label {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chips-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+      gap: 8px;
+    }
+
+    .chip-btn {
+      padding: 9px 10px;
+      border-radius: var(--border-radius-md);
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #475569;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+    }
+
+    .chip-btn:hover {
+      background: #e0f2fe;
+      border-color: #38bdf8;
+    }
+
+    .chip-btn.active {
+      background: #38bdf8;
+      border-color: #0284c7;
+      color: white;
+      box-shadow: 0 3px 0 #0284c7;
+      transform: translateY(-1px);
+    }
+
+    .btn-start-game {
+      font-size: 1.35rem;
+      font-weight: 900;
+      padding: 14px;
+      border-radius: var(--border-radius-lg);
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      box-shadow: 0 5px 0 #047857, 0 8px 16px rgba(16, 185, 129, 0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.15s;
+      margin-top: 4px;
+    }
+
+    .btn-start-game:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 #047857;
+    }
+
+    .btn-start-game:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #047857;
+    }
+
+    /* ==========================================================================
+       VENTANA EMERGENTE PREVIA AL COMIENZO DE CADA RONDA (READY MODAL)
+       ========================================================================== */
+    .round-prompt-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 120;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .round-prompt-modal.active {
+      display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .round-prompt-card {
+      background: white;
+      border-radius: var(--border-radius-xl);
+      border: 5px solid #38bdf8;
+      box-shadow: var(--shadow-lg);
+      padding: 36px 32px;
+      text-align: center;
+      max-width: 580px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .prompt-badge {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #0284c7;
+      background: #e0f2fe;
+      padding: 8px 20px;
+      border-radius: 50px;
+    }
+
+    .prompt-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+
+    .prompt-sub {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .btn-prompt-start {
+      font-size: 1.5rem;
+      font-weight: 900;
+      padding: 16px 36px;
+      border-radius: var(--border-radius-xl);
+      border: none;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(245, 158, 11, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-prompt-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 0 #b45309;
+    }
+
+    .btn-prompt-start:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #b45309;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE & PANTALLAS DE MONITOR / TABLET
+       ========================================================================== */
+    @media (max-width: 900px) {
+      body {
+        background-position: 0 0, 45px 0;
+      }
+      .app-container {
+        padding: 16px 14px 40px 55px;
+      }
+      .question-title {
+        font-size: 1.6rem;
+      }
+      .statement-text {
+        font-size: 1.3rem;
+      }
+      .letter-badge-3d {
+        width: 54px;
+        height: 54px;
+        font-size: 1.7rem;
+      }
+      .scoreboard-panel {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .teams-container {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app-container {
+        padding: 12px 10px 30px 20px;
+      }
+      body {
+        background-image: none;
+      }
+      .brand-pill {
+        font-size: 1.1rem;
+      }
+      .btn-tool span {
+        display: none;
+      }
+      .statement-card {
+        grid-template-columns: auto 1fr;
+      }
+      .card-actions-area {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+      }
+      .chips-selector {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas para animación de Confeti -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS PRINCIPAL (SUPERIOR)
+       ========================================================================== */
+  -->
+  <header class="top-toolbar">
+    <div class="brand-section">
+      <div class="brand-pill">
+        <span>✏️</span> 2 verdades y 1 mentira
+      </div>
+    </div>
+
+    <div class="toolbar-actions">
+      <!-- Botón para Reconfigurar -->
+      <button class="btn-tool warning" id="btnOpenSetup" title="Cambiar equipos, tiempo o rondas">
+        ⚙️ <span>Configuración</span>
+      </button>
+
+      <!-- Botones de Gestión de JSON -->
+      <button class="btn-tool success" id="btnDownloadSample" title="Descargar plantilla JSON de ejemplo">
+        📥 <span>Descargar JSON</span>
+      </button>
+      <button class="btn-tool primary" id="btnUploadJSON" title="Subir tus propias preguntas en JSON">
+        📤 <span>Cargar JSON</span>
+      </button>
+      <input type="file" id="fileInputJSON" accept=".json" style="display:none;">
+
+      <!-- Añadir Pregunta Rápida -->
+      <button class="btn-tool" id="btnOpenAddModal" title="Escribir una ronda nueva en la pizarra">
+        ➕ <span>Crear Ronda</span>
+      </button>
+
+      <!-- Pantalla Completa para MDI -->
+      <button class="btn-tool" id="btnFullscreen" title="Modo Pantalla Completa (Monitor Táctil)">
+        ⛶ <span>Pantalla Completa</span>
+      </button>
+
+      <!-- Sonido On/Off -->
+      <button class="btn-tool" id="btnToggleSound" title="Activar/Desactivar Sonidos">
+        🔊 <span id="soundStatusText">Sonido</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       PANTALLA DE CONFIGURACIÓN INICIAL (OVERLAY AJUSTADO Y COMPACTO)
+       ========================================================================== */
+  -->
+  <div class="setup-overlay" id="setupOverlay">
+    <div class="setup-card">
+      <div class="setup-header">
+        <h1 class="setup-title">🎮 Configuración de la Partida</h1>
+        <p class="setup-desc">Personaliza la dinámica de aula para 3.º de Primaria</p>
+      </div>
+
+      <!-- Número de Equipos: Opciones de 1 a 6 -->
+      <div class="setup-group">
+        <label class="setup-label">👥 Número de Equipos (1 a 6):</label>
+        <div class="chips-selector" id="teamsCountSelector">
+          <button type="button" class="chip-btn" data-val="1">1 (Clase)</button>
+          <button type="button" class="chip-btn active" data-val="2">2 Equipos</button>
+          <button type="button" class="chip-btn" data-val="3">3 Equipos</button>
+          <button type="button" class="chip-btn" data-val="4">4 Equipos</button>
+          <button type="button" class="chip-btn" data-val="5">5 Equipos</button>
+          <button type="button" class="chip-btn" data-val="6">6 Equipos</button>
+        </div>
+      </div>
+
+      <!-- Tiempo por Pregunta -->
+      <div class="setup-group">
+        <label class="setup-label">⏱️ Tiempo por Ronda:</label>
+        <div class="chips-selector" id="timerDurationSelector">
+          <button type="button" class="chip-btn" data-val="15">15s (Rápido)</button>
+          <button type="button" class="chip-btn active" data-val="30">30s (Normal)</button>
+          <button type="button" class="chip-btn" data-val="45">45s (Debate)</button>
+          <button type="button" class="chip-btn" data-val="60">60s (Pausado)</button>
+          <button type="button" class="chip-btn" data-val="0">Sin Límite</button>
+        </div>
+      </div>
+
+      <!-- Número de Rondas -->
+      <div class="setup-group">
+        <label class="setup-label">🎯 Número de Rondas:</label>
+        <div class="chips-selector" id="roundCountSelector">
+          <button type="button" class="chip-btn active" data-val="all">Todas (<span id="totalAvailableRoundsText">5</span>)</button>
+          <button type="button" class="chip-btn" data-val="3">3 Rondas</button>
+          <button type="button" class="chip-btn" data-val="5">5 Rondas</button>
+        </div>
+      </div>
+
+      <!-- Botón de Inicio -->
+      <button class="btn-start-game" id="btnStartGame">
+        🚀 ¡Entrar a la Pizarra y Jugar!
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VENTANA EMERGENTE PREVIA A CADA PREGUNTA (READY POPUP)
+       ========================================================================== */
+  -->
+  <div class="round-prompt-modal" id="roundStartModal">
+    <div class="round-prompt-card">
+      <div class="prompt-badge" id="promptRoundBadge">Ronda 1</div>
+      <h2 class="prompt-title" id="promptRoundTitle">Título de la Ronda</h2>
+      <p class="prompt-sub" id="promptRoundCategory">🏷️ Categoría</p>
+      <button class="btn-prompt-start" id="btnBeginRoundNow">
+        ⏱️ ¡Listos, empezar tiempo!
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ÁREA CENTRAL DE LA ACTIVIDAD
+       ========================================================================== */
+  -->
+  <main class="app-container">
+
+    <!-- Panel de Marcador y Equipos para Dinámica de Aula -->
+    <section class="scoreboard-panel">
+      <div class="round-indicator">
+        <span>🎯</span>
+        <span id="roundCounter">Ronda 1 de 5</span>
+      </div>
+
+      <div class="category-badge" id="categoryTitle">
+        🌟 Conocimiento del Docente
+      </div>
+
+      <div class="teams-container" id="teamsContainer">
+        <!-- Generado dinámicamente según la configuración de equipos -->
+      </div>
+    </section>
+
+    <!-- Encabezado de la Ronda Activa -->
+    <section class="question-banner">
+      <h1 class="question-title" id="questionTitle">Sobre nuestra profe de 3.º 👩‍🏫</h1>
+      <div class="question-subtitle">
+        <span>🕵️‍♀️</span>
+        <span>¡Lee con atención y encuentra cuál de las tres afirmaciones es la <strong>MENTIRA</strong>!</span>
+      </div>
+    </section>
+
+    <!-- Grid de 3 Opciones (A, B, C) -->
+    <section class="cards-grid" id="cardsGrid">
+      <!-- Se inyectarán dinámicamente las 3 tarjetas -->
+    </section>
+
+    <!-- Explicación Pedagógica -->
+    <section class="feedback-banner" id="feedbackBanner">
+      <div class="feedback-title">
+        <span>💡</span> <strong>¿Por qué es la mentira?</strong>
+      </div>
+      <p class="feedback-text" id="feedbackText">Explicación detallada de la respuesta.</p>
+    </section>
+
+    <!-- Navegación Inferior para Monitor Digital -->
+    <footer class="bottom-navigation">
+      <button class="btn-nav btn-prev" id="btnPrev">
+        ⬅️ Anterior
+      </button>
+
+      <button class="btn-nav btn-reveal" id="btnReveal">
+        🔍 Revelar Mentira
+      </button>
+
+      <button class="btn-nav btn-next" id="btnNext">
+        Siguiente ➡️
+      </button>
+    </footer>
+
+  </main>
+
+  <!-- ==========================================================================
+       MODAL: CREAR O EDITAR RONDA EN LA PIZARRA
+       ========================================================================== */
+  -->
+  <div class="modal-backdrop" id="addRoundModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">✨ Crear Nueva Ronda en la Pizarra</h2>
+        <button class="btn-close-modal" id="btnCloseAddModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="newRoundTitle">Título o Temática de la Ronda:</label>
+          <input type="text" id="newRoundTitle" class="form-input" placeholder="Ej: Sobre Lucas 👦 / Animales de la Selva 🐯">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="newRoundCategory">Categoría / Asignatura:</label>
+          <input type="text" id="newRoundCategory" class="form-input" placeholder="Ej: Inglés, Lengua, Ciencias, Personal...">
+        </div>
+
+        <hr style="border: 0; border-top: 2px solid #e2e8f0; margin: 6px 0;">
+        <p style="font-weight: 800; color: #0284c7;">Escribe 3 oraciones y marca cuál de ellas es la MENTIRA:</p>
+
+        <!-- Opción A -->
+        <div class="option-form-card">
+          <div class="form-group">
+            <label class="form-label">Oración A:</label>
+            <input type="text" id="optTextA" class="form-input" placeholder="Escribe la primera oración...">
+          </div>
+          <label class="radio-lie-label">
+            <input type="radio" name="correctLieRadio" value="0" checked>
+            🔴 Esta opción es la MENTIRA
+          </label>
+        </div>
+
+        <!-- Opción B -->
+        <div class="option-form-card">
+          <div class="form-group">
+            <label class="form-label">Oración B:</label>
+            <input type="text" id="optTextB" class="form-input" placeholder="Escribe la segunda oración...">
+          </div>
+          <label class="radio-lie-label">
+            <input type="radio" name="correctLieRadio" value="1">
+            🔴 Esta opción es la MENTIRA
+          </label>
+        </div>
+
+        <!-- Opción C -->
+        <div class="option-form-card">
+          <div class="form-group">
+            <label class="form-label">Oración C:</label>
+            <input type="text" id="optTextC" class="form-input" placeholder="Escribe la tercera oración...">
+          </div>
+          <label class="radio-lie-label">
+            <input type="radio" name="correctLieRadio" value="2">
+            🔴 Esta opción es la MENTIRA
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="newRoundExplain">Explicación o Curiosidad (Opcional):</label>
+          <input type="text" id="newRoundExplain" class="form-input" placeholder="¿Por qué es falsa? ¿Cuál es el dato real?">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-tool" id="btnCancelAdd">Cancelar</button>
+        <button class="btn-tool primary" id="btnSaveNewRound">💾 Guardar Ronda</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor para mensajes flotantes Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ==========================================================================
+       LÓGICA JAVASCRIPT
+       ========================================================================== */
+  -->
+  <script>
+    /* ==========================================================================
+       1. BANCO DE PREGUNTAS POR DEFECTO (EJEMPLO CURRICULAR Y DE AULA)
+       ========================================================================== */
+    const DEFAULT_DATASET = [
+      {
+        "id": 1,
+        "titulo": "Sobre nuestra profe de 3.º 👩‍🏫",
+        "categoria": "Conocimiento del Docente",
+        "opciones": [
+          {
+            "texto": "Tengo dos perros en casa que se llaman Toby y Pelusa.",
+            "esMentira": false
+          },
+          {
+            "texto": "He viajado en globo aerostático tres veces.",
+            "esMentira": true,
+            "explicacion": "¡Mentira! ¡Me dan un poco de miedo las alturas y nunca he subido en globo!"
+          },
+          {
+            "texto": "Mi postre favorito de todo el mundo es la tarta de queso.",
+            "esMentira": false
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "titulo": "Curiosidades del Reino Animal 🦁",
+        "categoria": "Ciencias Naturales",
+        "opciones": [
+          {
+            "texto": "Los pulpos tienen 3 corazones y su sangre es de color azul.",
+            "esMentira": false
+          },
+          {
+            "texto": "Las jirafas tienen la lengua tan larga que pueden limpiarse las orejas.",
+            "esMentira": false
+          },
+          {
+            "texto": "Los elefantes pueden dar grandes saltos para alcanzar comida alta.",
+            "esMentira": true,
+            "explicacion": "¡Mentira! Los elefantes son los únicos mamíferos terrestres que no pueden saltar."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "titulo": "English Class: Daily Routine & Food 🇬🇧",
+        "categoria": "Lengua Extranjera (Inglés)",
+        "opciones": [
+          {
+            "texto": "I always brush my teeth after having breakfast in the morning.",
+            "esMentira": false
+          },
+          {
+            "texto": "I drink hot chocolate with spicy pepper every summer afternoon.",
+            "esMentira": true,
+            "explicacion": "That's a lie! In summer I drink fresh lemonade or cold water, never spicy hot chocolate!"
+          },
+          {
+            "texto": "Apples, bananas and strawberries are healthy delicious fruits.",
+            "esMentira": false
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "titulo": "El Sistema Solar y el Espacio 🚀",
+        "categoria": "Ciencias Sociales",
+        "opciones": [
+          {
+            "texto": "La Luna brilla por las noches porque refleja la luz del Sol.",
+            "esMentira": false
+          },
+          {
+            "texto": "El Sol es un planeta gigante hecho de roca sólida y hielo.",
+            "esMentira": true,
+            "explicacion": "¡Mentira! El Sol es una ESTRELLA gigantesca compuesta de gases ardientes (hidrógeno y helio)."
+          },
+          {
+            "texto": "En el planeta Marte se encuentra el volcán más alto conocido: el Monte Olimpo.",
+            "esMentira": false
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "titulo": "Reglas y Retos de Lengua Castellana 📚",
+        "categoria": "Lengua y Literatura",
+        "opciones": [
+          {
+            "texto": "Las palabras llanas o graves llevan tilde si NO terminan en vocal, -n o -s.",
+            "esMentira": false
+          },
+          {
+            "texto": "Los nombres propios de personas y ciudades se escriben con minúscula.",
+            "esMentira": true,
+            "explicacion": "¡Mentira! ¡Los nombres propios (como Madrid, María o Lucas) SIEMPRE empiezan con MAYÚSCULA!"
+          },
+          {
+            "texto": "Un verbo es la palabra que expresa acciones, estados o procesos.",
+            "esMentira": false
+          }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       2. MOTOR DE SONIDO (WEB AUDIO API) - CERO DEPENDENCIAS EXTERNAS
+       ========================================================================== */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+
+      initContext() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playTone(freq, type, duration, startTime = 0, gainLevel = 0.25) {
+        if (!this.enabled) return;
+        this.initContext();
+        if (!this.ctx) return;
+
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + startTime);
+
+          gain.gain.setValueAtTime(gainLevel, this.ctx.currentTime + startTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + startTime + duration);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(this.ctx.currentTime + startTime);
+          osc.stop(this.ctx.currentTime + startTime + duration);
+        } catch (e) {
+          console.warn("Audio error:", e);
+        }
+      }
+
+      playSuccess() {
+        this.playTone(523.25, 'triangle', 0.2, 0);       // C5
+        this.playTone(659.25, 'triangle', 0.2, 0.1);     // E5
+        this.playTone(783.99, 'triangle', 0.2, 0.2);     // G5
+        this.playTone(1046.50, 'triangle', 0.45, 0.3);   // C6
+      }
+
+      playLieFound() {
+        this.playTone(440, 'sine', 0.15, 0);
+        this.playTone(554.37, 'sine', 0.15, 0.12);
+        this.playTone(659.25, 'sine', 0.15, 0.24);
+        this.playTone(880, 'triangle', 0.4, 0.36);
+      }
+
+      playTruthTap() {
+        this.playTone(400, 'sine', 0.15, 0, 0.15);
+      }
+
+      playClick() {
+        this.playTone(600, 'sine', 0.08, 0, 0.1);
+      }
+
+      playTimerBeep() {
+        this.playTone(800, 'square', 0.09, 0, 0.12);
+      }
+
+      playTimerEnd() {
+        this.playTone(300, 'sawtooth', 0.5, 0, 0.2);
+        this.playTone(250, 'sawtooth', 0.6, 0.2, 0.2);
+      }
+    }
+
+    /* ==========================================================================
+       3. EFECTO DE CONFETI PARA EL AULA
+       ========================================================================== */
+    class ConfettiEffect {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.animating = false;
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+      }
+
+      resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+
+      trigger(count = 80) {
+        this.resize();
+        const colors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#9b59b6', '#2bcbba', '#ff6b8b'];
+        for (let i = 0; i < count; i++) {
+          this.particles.push({
+            x: this.canvas.width / 2 + (Math.random() * 400 - 200),
+            y: this.canvas.height / 2 + (Math.random() * 200 - 100),
+            w: Math.random() * 12 + 6,
+            h: Math.random() * 8 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vx: (Math.random() - 0.5) * 16,
+            vy: (Math.random() - 1) * 16 - 4,
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 10,
+            gravity: 0.45,
+            opacity: 1
+          });
+        }
+
+        if (!this.animating) {
+          this.animating = true;
+          this.loop();
+        }
+      }
+
+      loop() {
+        if (this.particles.length === 0) {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          this.animating = false;
+          return;
+        }
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.rotation += p.rotationSpeed;
+          p.opacity -= 0.012;
+
+          if (p.opacity <= 0 || p.y > this.canvas.height) {
+            this.particles.splice(i, 1);
+            continue;
+          }
+
+          this.ctx.save();
+          this.ctx.translate(p.x, p.y);
+          this.ctx.rotate((p.rotation * Math.PI) / 180);
+          this.ctx.globalAlpha = Math.max(0, p.opacity);
+          this.ctx.fillStyle = p.color;
+          this.ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          this.ctx.restore();
+        }
+
+        requestAnimationFrame(() => this.loop());
+      }
+    }
+
+    /* ==========================================================================
+       4. CONTROLADOR PRINCIPAL DEL JUEGO
+       ========================================================================== */
+    class GameController {
+      constructor() {
+        this.dataset = JSON.parse(JSON.stringify(DEFAULT_DATASET));
+        this.activeDataset = [...this.dataset];
+        this.currentIndex = 0;
+        this.isRevealed = false;
+        
+        // Configuración de partida
+        this.config = {
+          teamCount: 2,
+          timerDuration: 30,
+          roundCountSetting: 'all'
+        };
+
+        // Definiciones temáticas de los 6 equipos
+        this.teamDefinitions = [
+          { name: '🔴 Sol', class: 'team-red', score: 0 },
+          { name: '🔵 Estrella', class: 'team-blue', score: 0 },
+          { name: '🟢 Luna', class: 'team-green', score: 0 },
+          { name: '🟡 Rayo', class: 'team-yellow', score: 0 },
+          { name: '🟣 Nube', class: 'team-purple', score: 0 },
+          { name: '🟠 Cometa', class: 'team-orange', score: 0 }
+        ];
+
+        // Temporizador
+        this.timerSeconds = 30;
+        this.timerInterval = null;
+        this.timerRunning = false;
+
+        // Servicios
+        this.sounds = new SoundEngine();
+        this.confetti = new ConfettiEffect('confettiCanvas');
+
+        // Caché de elementos DOM
+        this.dom = {
+          setupOverlay: document.getElementById('setupOverlay'),
+          btnStartGame: document.getElementById('btnStartGame'),
+          btnOpenSetup: document.getElementById('btnOpenSetup'),
+          totalAvailableRoundsText: document.getElementById('totalAvailableRoundsText'),
+          teamsCountSelector: document.getElementById('teamsCountSelector'),
+          timerDurationSelector: document.getElementById('timerDurationSelector'),
+          roundCountSelector: document.getElementById('roundCountSelector'),
+          roundStartModal: document.getElementById('roundStartModal'),
+          promptRoundBadge: document.getElementById('promptRoundBadge'),
+          promptRoundTitle: document.getElementById('promptRoundTitle'),
+          promptRoundCategory: document.getElementById('promptRoundCategory'),
+          btnBeginRoundNow: document.getElementById('btnBeginRoundNow'),
+          roundCounter: document.getElementById('roundCounter'),
+          categoryTitle: document.getElementById('categoryTitle'),
+          questionTitle: document.getElementById('questionTitle'),
+          cardsGrid: document.getElementById('cardsGrid'),
+          feedbackBanner: document.getElementById('feedbackBanner'),
+          feedbackText: document.getElementById('feedbackText'),
+          teamsContainer: document.getElementById('teamsContainer'),
+          btnPrev: document.getElementById('btnPrev'),
+          btnNext: document.getElementById('btnNext'),
+          btnReveal: document.getElementById('btnReveal'),
+          btnDownloadSample: document.getElementById('btnDownloadSample'),
+          btnUploadJSON: document.getElementById('btnUploadJSON'),
+          fileInputJSON: document.getElementById('fileInputJSON'),
+          btnOpenAddModal: document.getElementById('btnOpenAddModal'),
+          btnCloseAddModal: document.getElementById('btnCloseAddModal'),
+          btnCancelAdd: document.getElementById('btnCancelAdd'),
+          btnSaveNewRound: document.getElementById('btnSaveNewRound'),
+          addRoundModal: document.getElementById('addRoundModal'),
+          btnFullscreen: document.getElementById('btnFullscreen'),
+          btnToggleSound: document.getElementById('btnToggleSound'),
+          soundStatusText: document.getElementById('soundStatusText'),
+          toastContainer: document.getElementById('toastContainer')
+        };
+
+        this.letters = [
+          { letter: 'A', class: 'letter-a' },
+          { letter: 'B', class: 'letter-b' },
+          { letter: 'C', class: 'letter-c' }
+        ];
+
+        this.initEvents();
+        this.updateSetupCounts();
+      }
+
+      updateSetupCounts() {
+        if (this.dom.totalAvailableRoundsText) {
+          this.dom.totalAvailableRoundsText.textContent = this.dataset.length;
+        }
+      }
+
+      applySetupAndStart() {
+        if (this.config.roundCountSetting === 'all') {
+          this.activeDataset = [...this.dataset];
+        } else {
+          const count = parseInt(this.config.roundCountSetting, 10);
+          this.activeDataset = this.dataset.slice(0, Math.min(count, this.dataset.length));
+        }
+
+        // Reset de puntuaciones
+        this.teamDefinitions.forEach(t => t.score = 0);
+        this.renderScoreboardTeams();
+
+        // Ocultar pantalla de configuración
+        this.dom.setupOverlay.style.display = 'none';
+        this.currentIndex = 0;
+        this.prepareRoundPrompt();
+      }
+
+      renderScoreboardTeams() {
+        this.dom.teamsContainer.innerHTML = '';
+        
+        for (let i = 0; i < this.config.teamCount; i++) {
+          const t = this.teamDefinitions[i];
+          const card = document.createElement('div');
+          card.className = `team-card ${t.class}`;
+          card.title = `Toca para sumar punto al ${t.name}`;
+          card.innerHTML = `
+            <span>${t.name}</span>
+            <span class="team-score" id="scoreTeam_${i}">${t.score}</span>
+          `;
+          
+          card.addEventListener('click', () => {
+            t.score++;
+            document.getElementById(`scoreTeam_${i}`).textContent = t.score;
+            card.classList.add('active');
+            this.sounds.playSuccess();
+            setTimeout(() => card.classList.remove('active'), 400);
+          });
+
+          this.dom.teamsContainer.appendChild(card);
+        }
+
+        // Añadir temporizador visual al final
+        const timerBadge = document.createElement('div');
+        timerBadge.className = 'timer-badge';
+        timerBadge.id = 'timerBadge';
+        timerBadge.title = 'Toca para pausar o reanudar el tiempo';
+        timerBadge.innerHTML = `⏱️ <span id="timerText">${this.config.timerDuration > 0 ? this.config.timerDuration + 's' : '∞'}</span>`;
+        timerBadge.addEventListener('click', () => this.toggleTimer());
+        this.dom.teamsContainer.appendChild(timerBadge);
+
+        this.dom.timerBadge = timerBadge;
+        this.dom.timerText = document.getElementById('timerText');
+      }
+
+      prepareRoundPrompt() {
+        const current = this.activeDataset[this.currentIndex];
+        if (!current) return;
+
+        this.stopTimer();
+        this.dom.promptRoundBadge.textContent = `Ronda ${this.currentIndex + 1} de ${this.activeDataset.length}`;
+        this.dom.promptRoundTitle.textContent = current.titulo || `Ronda ${this.currentIndex + 1}`;
+        this.dom.promptRoundCategory.textContent = current.categoria ? `🏷️ ${current.categoria}` : '✨ ¿Preparados?';
+
+        this.dom.roundStartModal.classList.add('active');
+        this.sounds.playClick();
+      }
+
+      startCurrentRound() {
+        this.dom.roundStartModal.classList.remove('active');
+        this.renderRound();
+        if (this.config.timerDuration > 0) {
+          this.startTimer();
+        }
+      }
+
+      renderRound() {
+        this.isRevealed = false;
+        this.resetTimer();
+        this.dom.feedbackBanner.classList.remove('show');
+
+        const current = this.activeDataset[this.currentIndex];
+        if (!current) return;
+
+        this.dom.roundCounter.textContent = `Ronda ${this.currentIndex + 1} de ${this.activeDataset.length}`;
+        this.dom.categoryTitle.textContent = current.categoria ? `🏷️ ${current.categoria}` : '✨ 2 Verdades y 1 Mentira';
+        this.dom.questionTitle.textContent = current.titulo || `Ronda número ${this.currentIndex + 1}`;
+
+        this.dom.cardsGrid.innerHTML = '';
+        current.opciones.forEach((opc, idx) => {
+          const letterInfo = this.letters[idx] || { letter: String.fromCharCode(65 + idx), class: 'letter-a' };
+          
+          const card = document.createElement('article');
+          card.className = 'statement-card';
+          card.setAttribute('role', 'button');
+          card.setAttribute('tabindex', '0');
+          card.dataset.index = idx;
+
+          card.innerHTML = `
+            <div class="letter-badge-3d ${letterInfo.class}">${letterInfo.letter}</div>
+            <div class="statement-text">${this.escapeHTML(opc.texto)}</div>
+            <div class="card-actions-area">
+              <button class="btn-speak" title="Escuchar en voz alta" data-speak-text="${encodeURIComponent(opc.texto)}">
+                🔊
+              </button>
+              <div class="badge-result ${opc.esMentira ? 'lie-found' : 'truth-found'}">
+                ${opc.esMentira ? '🤥 ¡ES LA MENTIRA!' : '✅ VERDAD'}
+              </div>
+            </div>
+          `;
+
+          card.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-speak')) {
+              e.stopPropagation();
+              const text = decodeURIComponent(e.target.closest('.btn-speak').dataset.speakText);
+              this.speakSentence(text);
+              return;
+            }
+            this.handleCardClick(card, opc);
+          });
+
+          this.dom.cardsGrid.appendChild(card);
+        });
+
+        this.dom.btnPrev.disabled = (this.currentIndex === 0);
+        this.dom.btnPrev.style.opacity = (this.currentIndex === 0) ? '0.5' : '1';
+
+        const isLast = (this.currentIndex === this.activeDataset.length - 1);
+        this.dom.btnNext.innerHTML = isLast ? '🏁 Finalizar 🏆' : 'Siguiente ➡️';
+        this.dom.btnReveal.style.display = 'inline-flex';
+      }
+
+      handleCardClick(cardElement, optionData) {
+        this.sounds.initContext();
+
+        if (optionData.esMentira) {
+          cardElement.classList.add('is-lie', 'revealed');
+          this.sounds.playLieFound();
+          this.confetti.trigger(90);
+          this.showToast('🎉 ¡EXCELENTE! ¡Habéis cazado la mentira!', 'success');
+          this.revealAll(true);
+        } else {
+          cardElement.classList.add('is-truth', 'revealed');
+          this.sounds.playTruthTap();
+          this.showToast('✅ Esta afirmación es VERDADERA. ¡A buscar la falsa!', 'info');
+        }
+      }
+
+      revealAll(alreadyWon = false) {
+        if (this.isRevealed) return;
+        this.isRevealed = true;
+        this.stopTimer();
+
+        const current = this.activeDataset[this.currentIndex];
+        const cards = this.dom.cardsGrid.querySelectorAll('.statement-card');
+
+        cards.forEach((card, idx) => {
+          card.classList.add('revealed');
+          const isLie = current.opciones[idx].esMentira;
+          if (isLie) {
+            card.classList.add('is-lie');
+          } else {
+            card.classList.add('is-truth');
+          }
+        });
+
+        const lieOption = current.opciones.find(o => o.esMentira);
+        if (lieOption && lieOption.explicacion) {
+          this.dom.feedbackText.textContent = lieOption.explicacion;
+          this.dom.feedbackBanner.classList.add('show');
+        } else {
+          this.dom.feedbackText.textContent = "¡Muy bien analizadas todas las oraciones!";
+          this.dom.feedbackBanner.classList.add('show');
+        }
+
+        if (!alreadyWon) {
+          this.sounds.playSuccess();
+        }
+      }
+
+      speakSentence(text) {
+        if (!('speechSynthesis' in window)) {
+          this.showToast('La síntesis de voz no está soportada en este navegador.', 'error');
+          return;
+        }
+
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        const isEnglish = /[a-zA-Z\s]{15,}/.test(text) && (text.includes(" the ") || text.includes(" is ") || text.includes(" are ") || text.includes("I "));
+        utterance.lang = isEnglish ? 'en-US' : 'es-ES';
+        utterance.rate = 0.92;
+        utterance.pitch = 1.05;
+
+        window.speechSynthesis.speak(utterance);
+        this.showToast(`🗣️ Leyendo en ${isEnglish ? 'inglés' : 'español'}...`, 'info');
+      }
+
+      toggleTimer() {
+        if (this.config.timerDuration === 0) return;
+        if (this.timerRunning) {
+          this.stopTimer();
+          this.showToast('⏸️ Temporizador en pausa', 'info');
+        } else {
+          this.startTimer();
+          this.showToast('▶️ ¡Tiempo en marcha!', 'info');
+        }
+      }
+
+      startTimer() {
+        if (this.config.timerDuration === 0) return;
+        if (this.timerRunning) return;
+        this.timerRunning = true;
+        this.sounds.initContext();
+
+        this.timerInterval = setInterval(() => {
+          this.timerSeconds--;
+          if (this.dom.timerText) {
+            this.dom.timerText.textContent = `${this.timerSeconds}s`;
+          }
+
+          if (this.timerSeconds <= 5 && this.timerSeconds > 0) {
+            if (this.dom.timerBadge) this.dom.timerBadge.classList.add('urgent');
+            this.sounds.playTimerBeep();
+          }
+
+          if (this.timerSeconds <= 0) {
+            this.stopTimer();
+            if (this.dom.timerText) this.dom.timerText.textContent = `¡Tiempo!`;
+            if (this.dom.timerBadge) this.dom.timerBadge.classList.add('urgent');
+            this.sounds.playTimerEnd();
+            this.showToast('⏰ ¡Se acabó el tiempo de debate!', 'error');
+          }
+        }, 1000);
+      }
+
+      stopTimer() {
+        clearInterval(this.timerInterval);
+        this.timerRunning = false;
+      }
+
+      resetTimer() {
+        this.stopTimer();
+        this.timerSeconds = this.config.timerDuration;
+        if (this.dom.timerText) {
+          this.dom.timerText.textContent = this.config.timerDuration > 0 ? `${this.timerSeconds}s` : '∞';
+        }
+        if (this.dom.timerBadge) {
+          this.dom.timerBadge.classList.remove('urgent');
+        }
+      }
+
+      downloadSampleJSON() {
+        this.sounds.playClick();
+        const jsonStr = JSON.stringify(this.dataset, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '2_verdades_1_mentira_preguntas.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        this.showToast('📥 Archivo JSON de ejemplo descargado.', 'success');
+      }
+
+      handleFileUpload(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            if (!Array.isArray(parsed) || parsed.length === 0) {
+              throw new Error("El archivo JSON debe contener una lista con al menos una ronda.");
+            }
+
+            for (let i = 0; i < parsed.length; i++) {
+              const item = parsed[i];
+              if (!item.opciones || item.opciones.length !== 3) {
+                throw new Error(`La ronda ${i + 1} no tiene exactamente 3 opciones.`);
+              }
+              const lieCount = item.opciones.filter(o => o.esMentira === true).length;
+              if (lieCount !== 1) {
+                throw new Error(`La ronda ${i + 1} debe tener exactamente 1 mentira.`);
+              }
+            }
+
+            this.dataset = parsed;
+            this.updateSetupCounts();
+            this.applySetupAndStart();
+            this.sounds.playSuccess();
+            this.confetti.trigger(60);
+            this.showToast(`✨ ¡Éxito! ${parsed.length} rondas cargadas desde tu JSON.`, 'success');
+          } catch (err) {
+            this.showToast(`❌ Error en el JSON: ${err.message}`, 'error');
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      saveNewRoundFromModal() {
+        const title = document.getElementById('newRoundTitle').value.trim() || 'Ronda de Pizarra';
+        const category = document.getElementById('newRoundCategory').value.trim() || 'Actividad';
+        const textA = document.getElementById('optTextA').value.trim();
+        const textB = document.getElementById('optTextB').value.trim();
+        const textC = document.getElementById('optTextC').value.trim();
+        const explain = document.getElementById('newRoundExplain').value.trim();
+        const lieIndex = parseInt(document.querySelector('input[name="correctLieRadio"]:checked').value, 10);
+
+        if (!textA || !textB || !textC) {
+          this.showToast('⚠️ Por favor completa las 3 oraciones.', 'error');
+          return;
+        }
+
+        const newRound = {
+          id: Date.now(),
+          titulo: title,
+          categoria: category,
+          opciones: [
+            { texto: textA, esMentira: (lieIndex === 0), explicacion: (lieIndex === 0 ? explain : undefined) },
+            { texto: textB, esMentira: (lieIndex === 1), explicacion: (lieIndex === 1 ? explain : undefined) },
+            { texto: textC, esMentira: (lieIndex === 2), explicacion: (lieIndex === 2 ? explain : undefined) }
+          ]
+        };
+
+        this.dataset.push(newRound);
+        this.activeDataset.push(newRound);
+        this.updateSetupCounts();
+        this.currentIndex = this.activeDataset.length - 1;
+        this.closeModal();
+        this.prepareRoundPrompt();
+        this.sounds.playSuccess();
+        this.showToast('🎉 ¡Nueva ronda añadida!', 'success');
+
+        document.getElementById('newRoundTitle').value = '';
+        document.getElementById('newRoundCategory').value = '';
+        document.getElementById('optTextA').value = '';
+        document.getElementById('optTextB').value = '';
+        document.getElementById('optTextC').value = '';
+        document.getElementById('newRoundExplain').value = '';
+      }
+
+      openModal() {
+        this.dom.addRoundModal.classList.add('active');
+      }
+
+      closeModal() {
+        this.dom.addRoundModal.classList.remove('active');
+      }
+
+      showToast(msg, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = msg;
+        this.dom.toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.transition = 'all 0.3s ease';
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(20px)';
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
+      escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      initEvents() {
+        // Selector de Equipos (1 a 6)
+        this.dom.teamsCountSelector.querySelectorAll('.chip-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.dom.teamsCountSelector.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            this.config.teamCount = parseInt(btn.dataset.val, 10);
+            this.sounds.playClick();
+          });
+        });
+
+        // Selector de Temporizador
+        this.dom.timerDurationSelector.querySelectorAll('.chip-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.dom.timerDurationSelector.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            this.config.timerDuration = parseInt(btn.dataset.val, 10);
+            this.sounds.playClick();
+          });
+        });
+
+        // Selector de Rondas
+        this.dom.roundCountSelector.querySelectorAll('.chip-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            this.dom.roundCountSelector.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            this.config.roundCountSetting = btn.dataset.val;
+            this.sounds.playClick();
+          });
+        });
+
+        // Iniciar Partida desde Configuración
+        this.dom.btnStartGame.addEventListener('click', () => {
+          this.applySetupAndStart();
+        });
+
+        // Reabrir Configuración
+        this.dom.btnOpenSetup.addEventListener('click', () => {
+          this.stopTimer();
+          this.dom.setupOverlay.style.display = 'flex';
+          this.sounds.playClick();
+        });
+
+        // Iniciar ronda desde popup
+        this.dom.btnBeginRoundNow.addEventListener('click', () => {
+          this.startCurrentRound();
+        });
+
+        // Navegación
+        this.dom.btnPrev.addEventListener('click', () => {
+          if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.sounds.playClick();
+            this.prepareRoundPrompt();
+          }
+        });
+
+        this.dom.btnNext.addEventListener('click', () => {
+          if (this.currentIndex < this.activeDataset.length - 1) {
+            this.currentIndex++;
+            this.sounds.playClick();
+            this.prepareRoundPrompt();
+          } else {
+            this.sounds.playSuccess();
+            this.confetti.trigger(120);
+            this.showToast('🏆 ¡Fin de las rondas! ¡Excelente trabajo!', 'success');
+          }
+        });
+
+        this.dom.btnReveal.addEventListener('click', () => {
+          this.revealAll();
+        });
+
+        // Botones de JSON
+        this.dom.btnDownloadSample.addEventListener('click', () => this.downloadSampleJSON());
+        this.dom.btnUploadJSON.addEventListener('click', () => {
+          this.dom.fileInputJSON.value = '';
+          this.dom.fileInputJSON.click();
+        });
+        this.dom.fileInputJSON.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            this.handleFileUpload(e.target.files[0]);
+          }
+        });
+
+        // Modales
+        this.dom.btnOpenAddModal.addEventListener('click', () => this.openModal());
+        this.dom.btnCloseAddModal.addEventListener('click', () => this.closeModal());
+        this.dom.btnCancelAdd.addEventListener('click', () => this.closeModal());
+        this.dom.btnSaveNewRound.addEventListener('click', () => this.saveNewRoundFromModal());
+
+        // Pantalla Completa
+        this.dom.btnFullscreen.addEventListener('click', () => {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {
+              this.showToast("No se pudo activar pantalla completa.", "error");
+            });
+          } else {
+            document.exitFullscreen();
+          }
+        });
+
+        // Sonido On/Off
+        this.dom.btnToggleSound.addEventListener('click', () => {
+          this.sounds.enabled = !this.sounds.enabled;
+          this.dom.soundStatusText.textContent = this.sounds.enabled ? 'Sonido' : 'Silencio';
+          this.dom.btnToggleSound.style.opacity = this.sounds.enabled ? '1' : '0.6';
+          this.showToast(this.sounds.enabled ? '🔊 Efectos activados' : '🔇 Silencio activado', 'info');
+        });
+
+        // Atajos de teclado
+        window.addEventListener('keydown', (e) => {
+          if (document.querySelector('.modal-backdrop.active') || this.dom.setupOverlay.style.display !== 'none') return;
+          if (this.dom.roundStartModal.classList.contains('active')) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              this.dom.btnBeginRoundNow.click();
+            }
+            return;
+          }
+          if (e.key === 'ArrowRight') this.dom.btnNext.click();
+          if (e.key === 'ArrowLeft') this.dom.btnPrev.click();
+          if (e.key === ' ' || e.key === 'r' || e.key === 'R') this.dom.btnReveal.click();
+        });
+      }
+    }
+
+    // Iniciar la aplicación al cargar el DOM
+    window.addEventListener('DOMContentLoaded', () => {
+      window.app = new GameController();
+    });
+  </script>
+</body>
+</html>
