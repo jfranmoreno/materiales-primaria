@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Marco Común de Instrumentos de Evaluación | Aula Interactiva</title>
+  
+  <!-- Tipografías escolares legibles y amables -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       VARIABLES Y PALETA DE COLORES PASTEL CONTRASTADA (Ideal para MDI/Aulas)
+       ========================================================================== */
+    :root {
+      --bg-main: #f0f7f6;
+      --card-bg: #ffffff;
+      --text-main: #203a43;
+      --text-muted: #4a6572;
+      
+      /* Colores temáticos pastel intensos */
+      --mint-light: #e8f8f2;
+      --mint-dark: #0fa47f;
+      --blue-light: #e3f2fd;
+      --blue-dark: #1976d2;
+      --amber-light: #fff8e1;
+      --amber-dark: #f57f17;
+      --purple-light: #f3e5f5;
+      --purple-dark: #7b1fa2;
+      --coral-light: #ffebee;
+      --coral-dark: #e53935;
+      --teal-light: #e0f2f1;
+      --teal-dark: #00897b;
+
+      --shadow-sm: 0 4px 12px rgba(32, 58, 67, 0.08);
+      --shadow-md: 0 8px 24px rgba(32, 58, 67, 0.12);
+      --shadow-lg: 0 14px 36px rgba(32, 58, 67, 0.16);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --font-body: 'Nunito', sans-serif;
+      --font-title: 'Quicksand', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       CABECERA Y NAVEGACIÓN TÁCTIL (Mínimo 60px para toques cómodos)
+       ========================================================================== */
+    header {
+      background: #ffffff;
+      padding: 1rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 54px;
+      height: 54px;
+      background: var(--mint-light);
+      color: var(--mint-dark);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      border: 3px solid var(--mint-dark);
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .brand-text p {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--mint-dark);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Botones de acción general */
+    .icon-btn {
+      min-width: 54px;
+      min-height: 54px;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      border: 2px solid #e0e0e0;
+      background: #ffffff;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 0 #d5d5d5;
+    }
+
+    .icon-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #d5d5d5;
+    }
+
+    /* Barra de pestañas principal */
+    .nav-tabs {
+      display: flex;
+      background: #eef2f5;
+      padding: 6px;
+      border-radius: var(--radius-lg);
+      gap: 8px;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 1200px;
+      margin: 1rem auto 0 auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-height: 60px;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-md);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-title);
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+      border-bottom: 4px solid var(--mint-dark);
+    }
+
+    /* ==========================================================================
+       CONTENEDOR PRINCIPAL Y VISTAS
+       ========================================================================== */
+    main {
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .section-header p {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       SECCIÓN 1: TRIANGULACIÓN PEDAGÓGICA (3 Pilares)
+       ========================================================================== */
+    .triangulation-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .pillar-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem;
+      box-shadow: var(--shadow-sm);
+      border: 3px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .pillar-card:active {
+      transform: scale(0.97);
+    }
+
+    .pillar-card.active {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pillar-card[data-type="obs"] {
+      background: var(--amber-light);
+      border-color: #ffe082;
+    }
+    .pillar-card[data-type="obs"].active {
+      border-color: var(--amber-dark);
+      background: #ffffff;
+    }
+
+    .pillar-card[data-type="prod"] {
+      background: var(--mint-light);
+      border-color: #a7f3d0;
+    }
+    .pillar-card[data-type="prod"].active {
+      border-color: var(--mint-dark);
+      background: #ffffff;
+    }
+
+    .pillar-card[data-type="ind"] {
+      background: var(--blue-light);
+      border-color: #bae6fd;
+    }
+    .pillar-card[data-type="ind"].active {
+      border-color: var(--blue-dark);
+      background: #ffffff;
+    }
+
+    .pillar-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+      background: #ffffff;
+    }
+
+    .pillar-title {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+    }
+
+    .pillar-desc {
+      font-size: 1.1rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .pillar-badge {
+      margin-top: auto;
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      background: rgba(0,0,0,0.06);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Panel de sinergia de triangulación */
+    .triangle-status-box {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      border: 3px dashed var(--mint-dark);
+      margin-top: 1.5rem;
+    }
+
+    .triangle-status-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--mint-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .triangle-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .triangle-chip {
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      background: #e2e8f0;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .triangle-chip.ready {
+      background: var(--mint-dark);
+      color: #ffffff;
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(15, 164, 127, 0.3);
+    }
+
+    /* ==========================================================================
+       SECCIÓN 2: CATÁLOGO DE INSTRUMENTOS (Fichas Interactivas)
+       ========================================================================== */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .instrument-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      border-left: 10px solid var(--mint-dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.2rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .instrument-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .instrument-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .instrument-avatar {
+      font-size: 2.5rem;
+      min-width: 60px;
+      height: 60px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+    }
+
+    .instrument-info h3 {
+      font-family: var(--font-title);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+
+    .instrument-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      background: #f1f5f9;
+      color: var(--text-muted);
+    }
+
+    .instrument-body p {
+      font-size: 1.05rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .instrument-key {
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .action-touch-btn {
+      min-height: 56px;
+      background: var(--text-main);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-title);
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      box-shadow: 0 4px 0 #0f172a;
+    }
+
+    .action-touch-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 transparent;
+    }
+
+    /* ==========================================================================
+       MODAL DE SIMULACIÓN INTERACTIVA (Diana, Rúbrica, Lista, etc.)
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      width: 50px;
+      height: 50px;
+      background: #fee2e2;
+      color: #dc2626;
+      border: 2px solid #ef4444;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Simuladores dentro del modal */
+    .sim-box {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    /* Mini Diana de Evaluación Interactiva */
+    .diana-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .diana-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .diana-label {
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .diana-stepper {
+      display: flex;
+      gap: 8px;
+    }
+
+    .diana-step {
+      flex: 1;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      border: 2px solid #cbd5e1;
+      background: #ffffff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .diana-step.selected {
+      background: var(--mint-dark);
+      color: #ffffff;
+      border-color: var(--mint-dark);
+      transform: scale(1.03);
+    }
+
+    /* Mini Checklist Interactiva */
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+      border: 2px solid #e2e8f0;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .checklist-item.checked {
+      border-color: var(--mint-dark);
+      background: var(--mint-light);
+    }
+
+    .custom-check {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .checklist-item.checked .custom-check {
+      background: var(--mint-dark);
+      border-color: var(--mint-dark);
+    }
+
+    /* ==========================================================================
+       SECCIÓN 3: JUEGO / MATRIZ DE EMPAREJAMIENTO
+       ========================================================================== */
+    .game-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .game-board {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .game-column-title {
+      font-family: var(--font-title);
+      font-size: 1.3rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 1rem;
+      padding: 0.6rem;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .game-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .game-card {
+      min-height: 70px;
+      padding: 1rem 1.2rem;
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 0 #cbd5e1;
+      font-weight: 800;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .game-card:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 transparent;
+    }
+
+    .game-card.selected {
+      border-color: var(--blue-dark);
+      background: var(--blue-light);
+      transform: scale(1.02);
+      box-shadow: 0 6px 12px rgba(25, 118, 210, 0.2);
+    }
+
+    .game-card.matched {
+      border-color: var(--mint-dark);
+      background: var(--mint-light);
+      color: var(--mint-dark);
+      pointer-events: none;
+      box-shadow: 0 2px 0 var(--mint-dark);
+      opacity: 0.9;
+    }
+
+    .game-card.error {
+      animation: shake 0.4s ease;
+      border-color: var(--coral-dark);
+      background: var(--coral-light);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .game-score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.5rem;
+    }
+
+    .score-badge {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--mint-dark);
+    }
+
+    /* ==========================================================================
+       SECCIÓN 4: ACUERDOS DE MÍNIMOS (Pacto de Claustro)
+       ========================================================================== */
+    .agreements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .agreement-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 1.8rem;
+      box-shadow: var(--shadow-sm);
+      border: 3px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .agreement-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--mint-light);
+      color: var(--mint-dark);
+      border: 2px solid var(--mint-dark);
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .agreement-card h3 {
+      font-family: var(--font-title);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+    }
+
+    .agreement-card p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 1.2rem;
+    }
+
+    .stamp-btn {
+      min-height: 54px;
+      border-radius: var(--radius-md);
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .stamp-btn.stamped {
+      background: var(--amber-light);
+      border-color: var(--amber-dark);
+      color: var(--amber-dark);
+      transform: scale(1.02);
+    }
+
+    /* Simulador de Ponderación 40/50% */
+    .weight-simulator {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .weight-bar-container {
+      height: 50px;
+      background: #e2e8f0;
+      border-radius: 25px;
+      overflow: hidden;
+      display: flex;
+      margin: 1.5rem 0;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .weight-bar-tests {
+      background: var(--blue-dark);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      transition: width 0.3s ease;
+    }
+
+    .weight-bar-process {
+      background: var(--mint-dark);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      transition: width 0.3s ease;
+    }
+
+    .weight-slider-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .weight-slider {
+      flex: 1;
+      height: 16px;
+      -webkit-appearance: none;
+      background: #cbd5e1;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .weight-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--mint-dark);
+      cursor: pointer;
+      border: 3px solid #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ==========================================================================
+       CONFETTI CANVAS Y UTILIDADES
+       ========================================================================== */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .toast-msg {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: #ffffff;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-lg);
+      z-index: 300;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas para animación de celebración -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- MENSAJE TOAST FLOTANTE -->
+  <div id="toast" class="toast-msg">✨ ¡Mensaje del sistema!</div>
+
+  <!-- CABECERA PRINCIPAL -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🧭</div>
+      <div class="brand-text">
+        <h1>Marco Común de Evaluación</h1>
+        <p>Propuesta Pedagógica de Centro • Primaria y CCP</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="audioToggleBtn" title="Activar/Silenciar sonido">
+        <span id="audioIcon">🔊</span>
+      </button>
+      <button class="icon-btn" id="fullScreenBtn" title="Pantalla completa para monitor">
+        <span>⛶</span> Pantalla Completa
+      </button>
+    </div>
+
+    <!-- Pestañas de Navegación Táctil -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-target="triangulacion">
+        <span>🔺</span> 1. Triangulación
+      </button>
+      <button class="tab-btn" data-target="catalogo">
+        <span>🧰</span> 2. Super-Instrumentos
+      </button>
+      <button class="tab-btn" data-target="matriz">
+        <span>🧩</span> 3. Taller Matriz
+      </button>
+      <button class="tab-btn" data-target="acuerdos">
+        <span>📜</span> 4. Acuerdos de Centro
+      </button>
+    </nav>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main>
+
+    <!-- ====================================================================
+         SECCIÓN 1: TRIANGULACIÓN PEDAGÓGICA
+         ==================================================================== -->
+    <section id="triangulacion" class="view-section active">
+      <div class="section-header">
+        <h2>La Fórmula de la Evaluación Justa</h2>
+        <p>Evaluar competencias exige no depender de un solo examen. ¡Toca los 3 pilares para descubrir cómo triangulamos el aprendizaje!</p>
+      </div>
+
+      <div class="triangulation-container">
+        <!-- Pilar 1 -->
+        <div class="pillar-card" data-type="obs" onclick="togglePillar('obs')">
+          <div class="pillar-icon">👁️</div>
+          <h3 class="pillar-title">1. Observación Directa</h3>
+          <p class="pillar-desc">Seguimiento diario del trabajo en clase, actitud participativa, respeto a los turnos y procedimientos prácticos en directo.</p>
+          <div class="pillar-badge">📌 Rutinas y hábitos</div>
+        </div>
+
+        <!-- Pilar 2 -->
+        <div class="pillar-card" data-type="prod" onclick="togglePillar('prod')">
+          <div class="pillar-icon">🎨</div>
+          <h3 class="pillar-title">2. Productos y Desempeños</h3>
+          <p class="pillar-desc">Proyectos creativos, cuadernos de clase, informes de experimentos, murales, maquetas y retos aplicados en equipo.</p>
+          <div class="pillar-badge">📁 Creaciones aplicadas</div>
+        </div>
+
+        <!-- Pilar 3 -->
+        <div class="pillar-card" data-type="ind" onclick="togglePillar('ind')">
+          <div class="pillar-icon">📝</div>
+          <h3 class="pillar-title">3. Comprobaciones Individuales</h3>
+          <p class="pillar-desc">Pruebas escritas y orales competenciales. Comprueban la transferencia autónoma de los saberes ante situaciones nuevas.</p>
+          <div class="pillar-badge">💡 Transferencia personal</div>
+        </div>
+      </div>
+
+      <!-- Estado de la Triangulación -->
+      <div class="triangle-status-box">
+        <h3 class="triangle-status-title">Estado de la Triangulación de Aula</h3>
+        <p>Para una evaluación 100% formativa y objetiva, activa los 3 componentes esenciales:</p>
+        <div class="triangle-indicators">
+          <div class="triangle-chip" id="chip-obs">👁️ Observación: Inactiva</div>
+          <div class="triangle-chip" id="chip-prod">🎨 Productos: Inactivos</div>
+          <div class="triangle-chip" id="chip-ind">📝 Pruebas: Inactivas</div>
+        </div>
+        <button class="action-touch-btn" style="max-width: 320px; margin: 0 auto;" onclick="autoCompleteTriangle()">
+          ⚡ Activar Triangulación Completa
+        </button>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECCIÓN 2: CATÁLOGO DE INSTRUMENTOS
+         ==================================================================== -->
+    <section id="catalogo" class="view-section">
+      <div class="section-header">
+        <h2>Catálogo de Instrumentos Recomendados</h2>
+        <p>Cada instrumento tiene su superpoder. Toca el botón <strong>"Probar Herramienta"</strong> para abrir su simulador interactivo.</p>
+      </div>
+
+      <div class="catalog-grid">
+        <!-- Instrumento A -->
+        <div class="instrument-card" style="border-left-color: var(--blue-dark);">
+          <div class="instrument-top">
+            <div class="instrument-avatar">📝</div>
+            <div class="instrument-info">
+              <h3>A. Pruebas Competenciales</h3>
+              <span class="instrument-tag">Escritas y Orales</span>
+            </div>
+          </div>
+          <div class="instrument-body">
+            <p><span class="instrument-key">¿Para qué sirve?:</span> Superar la memoria repetitiva mediante casos prácticos, gráficos y preguntas de toma de decisiones.</p>
+            <p><span class="instrument-key">Corrección:</span> Clave con indicadores de logro o rúbrica sintética de defensa oral.</p>
+          </div>
+          <button class="action-touch-btn" onclick="openModal('pruebas')">
+            🔍 Ver Ejemplo Competencial
+          </button>
+        </div>
+
+        <!-- Instrumento B -->
+        <div class="instrument-card" style="border-left-color: var(--purple-dark);">
+          <div class="instrument-top">
+            <div class="instrument-avatar">📊</div>
+            <div class="instrument-info">
+              <h3>B. Rúbricas Analíticas</h3>
+              <span class="instrument-tag">Descriptores Graduados</span>
+            </div>
+          </div>
+          <div class="instrument-body">
+            <p><span class="instrument-key">¿Para qué sirve?:</span> Evaluar tareas complejas (ABP, maquetas, exposiciones) con total transparencia antes de empezar.</p>
+            <p><span class="instrument-key">Ventaja:</span> El alumnado conoce los niveles de éxito y facilita el feedback cualitativo.</p>
+          </div>
+          <button class="action-touch-btn" onclick="openModal('rubrica')">
+            🎛️ Probar Simulador de Rúbrica
+          </button>
+        </div>
+
+        <!-- Instrumento C -->
+        <div class="instrument-card" style="border-left-color: var(--mint-dark);">
+          <div class="instrument-top">
+            <div class="instrument-avatar">📋</div>
+            <div class="instrument-info">
+              <h3>C. Escalas y Listas de Control</h3>
+              <span class="instrument-tag">Registro Rápido</span>
+            </div>
+          </div>
+          <div class="instrument-body">
+            <p><span class="instrument-key">¿Para qué sirve?:</span> Registrar la presencia, frecuencia o calidad de procedimientos y actitudes en vivo.</p>
+            <p><span class="instrument-key">Ventaja:</span> Muy ágil para laboratorios, talleres, orden y rutinas cooperativas.</p>
+          </div>
+          <button class="action-touch-btn" onclick="openModal('lista')">
+            ✅ Abrir Lista de Control
+          </button>
+        </div>
+
+        <!-- Instrumento D -->
+        <div class="instrument-card" style="border-left-color: var(--amber-dark);">
+          <div class="instrument-top">
+            <div class="instrument-avatar">📂</div>
+            <div class="instrument-info">
+              <h3>D. Portafolio y Cuaderno</h3>
+              <span class="instrument-tag">Evolución en el Tiempo</span>
+            </div>
+          </div>
+          <div class="instrument-body">
+            <p><span class="instrument-key">¿Para qué sirve?:</span> Mostrar el progreso real reuniendo borradores iniciales, correcciones y reflexiones.</p>
+            <p><span class="instrument-key">Ventaja:</span> Potencia la metacognición y facilita las tutorías con las familias.</p>
+          </div>
+          <button class="action-touch-btn" onclick="openModal('portafolio')">
+            📖 Explorar Portafolio
+          </button>
+        </div>
+
+        <!-- Instrumento E -->
+        <div class="instrument-card" style="border-left-color: var(--coral-dark);">
+          <div class="instrument-top">
+            <div class="instrument-avatar">🎯</div>
+            <div class="instrument-info">
+              <h3>E. Dianas y Coevaluación</h3>
+              <span class="instrument-tag">Autonomía y Grupo</span>
+            </div>
+          </div>
+          <div class="instrument-body">
+            <p><span class="instrument-key">¿Para qué sirve?:</span> Implicar a los niños/as en su propia evaluación y en la valoración respetuosa del equipo.</p>
+            <p><span class="instrument-key">Ventaja:</span> Diagnóstico visual inmediato del clima y roles cooperativos.</p>
+          </div>
+          <button class="action-touch-btn" onclick="openModal('diana')">
+            🎯 Practicar con Diana Táctil
+          </button>
+        </div>
+
+        <!-- Instrumento F -->
+        <div class="instrument-card" style="border-left-color: var(--teal-dark);">
+          <div class="instrument-top">
+            <div class="instrument-avatar">📓</div>
+            <div class="instrument-info">
+              <h3>F. Registro Anecdotario</h3>
+              <span class="instrument-tag">Notas de Campo / NEAE</span>
+            </div>
+          </div>
+          <div class="instrument-body">
+            <p><span class="instrument-key">¿Para qué sirve?:</span> Anotar hechos singulares, bloqueos o avances notables en situaciones espontáneas.</p>
+            <p><span class="instrument-key">Ventaja:</span> Clave para la coordinación con Orientación y atención a la diversidad.</p>
+          </div>
+          <button class="action-touch-btn" onclick="openModal('anecdotario')">
+            🔍 Ver Ficha Anecdotario
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECCIÓN 3: TALLER MATRIZ (Juego de Emparejamiento Interactivo)
+         ==================================================================== -->
+    <section id="matriz" class="view-section">
+      <div class="section-header">
+        <h2>Laboratorio de Emparejamiento</h2>
+        <p>Demuestra tu maestría pedagógica: Selecciona una <strong>Técnica de Aula</strong> de la izquierda y luego su <strong>Instrumento Óptimo</strong> de la derecha.</p>
+      </div>
+
+      <div class="game-score-bar">
+        <div>
+          <span>Parejas Acertadas: </span>
+          <strong class="score-badge" id="matchCounter">0 / 6</strong>
+        </div>
+        <button class="icon-btn" onclick="resetGame()" style="min-height: 44px; font-size: 0.95rem;">
+          🔄 Reiniciar Desafío
+        </button>
+      </div>
+
+      <div class="game-board">
+        <!-- Columna 1: Situaciones de Aprendizaje -->
+        <div>
+          <div class="game-column-title">1. ¿Qué queremos evaluar en clase?</div>
+          <div class="game-list" id="situationsList">
+            <!-- Renderizado dinámico vía JS -->
+          </div>
+        </div>
+
+        <!-- Columna 2: Instrumentos de Evaluación -->
+        <div>
+          <div class="game-column-title">2. ¿Qué instrumento elegimos?</div>
+          <div class="game-list" id="instrumentsList">
+            <!-- Renderizado dinámico vía JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECCIÓN 4: ACUERDOS DE MÍNIMOS DE CENTRO
+         ==================================================================== -->
+    <section id="acuerdos" class="view-section">
+      <div class="section-header">
+        <h2>Acuerdos de Mínimos para Departamentos y Ciclos</h2>
+        <p>Los 4 compromisos irrenunciables para garantizar equidad, transparencia y rigor en nuestro centro.</p>
+      </div>
+
+      <div class="agreements-grid">
+        <!-- Acuerdo 1 -->
+        <div class="agreement-card">
+          <div class="agreement-num">1</div>
+          <h3>Variedad en la Calificación</h3>
+          <p>En cada evaluación trimestral, la nota de cada área debe apoyarse en <strong>al menos 3 instrumentos distintos</strong>.</p>
+          <button class="stamp-btn" id="stamp-1" onclick="toggleStamp(1)">
+            <span>🔲</span> Sellar Compromiso
+          </button>
+        </div>
+
+        <!-- Acuerdo 2 -->
+        <div class="agreement-card">
+          <div class="agreement-num">2</div>
+          <h3>Ponderación Equilibrada</h3>
+          <p>El peso conjunto de exámenes escritos u orales <strong>nunca superará el 40-50%</strong>. El resto es proceso y desempeño.</p>
+          <button class="stamp-btn" id="stamp-2" onclick="toggleStamp(2)">
+            <span>🔲</span> Sellar Compromiso
+          </button>
+        </div>
+
+        <!-- Acuerdo 3 -->
+        <div class="agreement-card">
+          <div class="agreement-num">3</div>
+          <h3>Publicidad y Transparencia</h3>
+          <p>Las rúbricas y criterios de logro <strong>se explican a los niños/as antes</strong> de empezar cualquier reto o unidad.</p>
+          <button class="stamp-btn" id="stamp-3" onclick="toggleStamp(3)">
+            <span>🔲</span> Sellar Compromiso
+          </button>
+        </div>
+
+        <!-- Acuerdo 4 -->
+        <div class="agreement-card">
+          <div class="agreement-num">4</div>
+          <h3>Devolución Cualitativa (Feedback)</h3>
+          <p>Toda tarea corregida incluirá <strong>consejos claros de mejora</strong>, sin limitarse a un simple número frío.</p>
+          <button class="stamp-btn" id="stamp-4" onclick="toggleStamp(4)">
+            <span>🔲</span> Sellar Compromiso
+          </button>
+        </div>
+      </div>
+
+      <!-- Simulador de Ponderación 40/50% -->
+      <div class="weight-simulator">
+        <h3 style="font-family: var(--font-title); font-size: 1.5rem; margin-bottom: 0.5rem;">
+          ⚖️ Simulador de Ponderación Oficial de Aula
+        </h3>
+        <p style="color: var(--text-muted); font-weight: 700;">
+          Ajusta la barra para comprobar cómo repartimos el peso de las pruebas individuales frente al proceso formativo:
+        </p>
+
+        <div class="weight-bar-container">
+          <div class="weight-bar-tests" id="barTests" style="width: 40%;">
+            Pruebas: 40%
+          </div>
+          <div class="weight-bar-process" id="barProcess" style="width: 60%;">
+            Proceso, Productos y Observación: 60%
+          </div>
+        </div>
+
+        <div class="weight-slider-box">
+          <span style="font-weight: 800;">10%</span>
+          <input type="range" class="weight-slider" id="weightRange" min="10" max="70" value="40" oninput="updateWeightBar(this.value)">
+          <span style="font-weight: 800;">70%</span>
+        </div>
+
+        <div id="weightFeedback" style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; color: var(--mint-dark);">
+          ✅ ¡Distribución dentro del marco normativo del centro! (Máximo 50% en pruebas individuales)
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODAL UNIVERSAL PARA SIMULADORES DE INSTRUMENTOS
+       ==================================================================== -->
+  <div class="modal-overlay" id="toolModal" onclick="handleBackdropClick(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()" title="Cerrar ventana">✕</button>
+      <div id="modalContent">
+        <!-- Inyección dinámica de contenidos -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       JAVASCRIPT AUTOCONTENIDO: LÓGICA, AUDIO API Y DINÁMICAS TÁCTILES
+       ========================================================================== -->
+  <script>
+    /* ==========================================================================
+       1. SISTEMA DE AUDIO (Web Audio API - Sin archivos externos)
+       ========================================================================== */
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    // Sonido táctil suave al tocar botones
+    function playTapSound() {
+      if (!soundEnabled) return;
+      initAudio();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+      
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
+
+    // Sonido triunfal de acierto (Arpegio Mayor)
+    function playSuccessSound() {
+      if (!soundEnabled) return;
+      initAudio();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // Do, Mi, Sol, Do agudo
+      notes.forEach((freq, index) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        
+        const startTime = audioCtx.currentTime + (index * 0.07);
+        gain.gain.setValueAtTime(0.25, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start(startTime);
+        osc.stop(startTime + 0.3);
+      });
+    }
+
+    // Sonido de error pedagógico suave
+    function playErrorSound() {
+      if (!soundEnabled) return;
+      initAudio();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.2);
+      
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+      
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+    }
+
+    // Control de silencio
+    document.getElementById('audioToggleBtn').addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      document.getElementById('audioIcon').textContent = soundEnabled ? '🔊' : '🔇';
+      showToast(soundEnabled ? 'Sonido Activado' : 'Sonido Silenciado');
+    });
+
+    // Modo pantalla completa para Pizarra MDI
+    document.getElementById('fullScreenBtn').addEventListener('click', () => {
+      playTapSound();
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          showToast('Pantalla completa no disponible');
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    /* ==========================================================================
+       2. NAVEGACIÓN POR PESTAÑAS
+       ========================================================================== */
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const viewSections = document.querySelectorAll('.view-section');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        playTapSound();
+        const targetId = btn.getAttribute('data-target');
+
+        tabButtons.forEach(b => b.classList.remove('active'));
+        viewSections.forEach(s => s.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+      });
+    });
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    /* ==========================================================================
+       3. SECCIÓN 1: LÓGICA DE TRIANGULACIÓN
+       ========================================================================== */
+    const pillarState = {
+      obs: false,
+      prod: false,
+      ind: false
+    };
+
+    function togglePillar(type) {
+      playTapSound();
+      pillarState[type] = !pillarState[type];
+      
+      const card = document.querySelector(`.pillar-card[data-type="${type}"]`);
+      const chip = document.getElementById(`chip-${type}`);
+
+      if (pillarState[type]) {
+        card.classList.add('active');
+        chip.classList.add('ready');
+        if (type === 'obs') chip.textContent = '👁️ Observación: ¡Activa!';
+        if (type === 'prod') chip.textContent = '🎨 Productos: ¡Activos!';
+        if (type === 'ind') chip.textContent = '📝 Pruebas: ¡Activas!';
+      } else {
+        card.classList.remove('active');
+        chip.classList.remove('ready');
+        if (type === 'obs') chip.textContent = '👁️ Observación: Inactiva';
+        if (type === 'prod') chip.textContent = '🎨 Productos: Inactivos';
+        if (type === 'ind') chip.textContent = '📝 Pruebas: Inactivas';
+      }
+
+      checkTriangulationComplete();
+    }
+
+    function autoCompleteTriangle() {
+      pillarState.obs = true;
+      pillarState.prod = true;
+      pillarState.ind = true;
+
+      document.querySelectorAll('.pillar-card').forEach(c => c.classList.add('active'));
+      document.getElementById('chip-obs').className = 'triangle-chip ready';
+      document.getElementById('chip-obs').textContent = '👁️ Observación: ¡Activa!';
+      document.getElementById('chip-prod').className = 'triangle-chip ready';
+      document.getElementById('chip-prod').textContent = '🎨 Productos: ¡Activos!';
+      document.getElementById('chip-ind').className = 'triangle-chip ready';
+      document.getElementById('chip-ind').textContent = '📝 Pruebas: ¡Activas!';
+
+      checkTriangulationComplete();
+    }
+
+    function checkTriangulationComplete() {
+      if (pillarState.obs && pillarState.prod && pillarState.ind) {
+        playSuccessSound();
+        triggerConfetti();
+        showToast('🌟 ¡Triangulación Completa! Evaluación Equitativa Garantizada');
+      }
+    }
+
+    /* ==========================================================================
+       4. SECCIÓN 2: MODALES INTERACTIVOS Y SIMULADORES
+       ========================================================================== */
+    const modalContentTemplates = {
+      pruebas: `
+        <h2 style="font-family: var(--font-title); color: var(--blue-dark); margin-bottom: 0.5rem;">📝 Pruebas Escritas y Orales Competenciales</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem;">Superamos el modelo memorístico tradicional mediante retos prácticos.</p>
+        
+        <div class="sim-box">
+          <h4 style="font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--text-main);">🔍 Comparativa en el Aula de Primaria:</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div style="background: #fee2e2; padding: 1rem; border-radius: 12px; border-left: 5px solid #ef4444;">
+              <strong style="color: #b91c1c;">❌ Modelo Memorístico Antiguo</strong>
+              <p style="font-size: 0.95rem; margin-top: 6px; color: #450a0a;">"Escribe de memoria la definición exacta de mamífero y sus 4 características."</p>
+            </div>
+            <div style="background: #dcfce7; padding: 1rem; border-radius: 12px; border-left: 5px solid #22c55e;">
+              <strong style="color: #15803d;">✅ Modelo Competencial Nuevo</strong>
+              <p style="font-size: 0.95rem; margin-top: 6px; color: #052e16;">"Observa la radiografía del animal misterioso, deduce su hábitat y justifica por qué es un mamífero."</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #e0f2fe; padding: 1rem; border-radius: 12px; font-weight: 700; color: #0369a1;">
+          💡 Regla de Oro de Centro: Acompañar siempre de una clave con indicadores de logro o rúbrica sintética.
+        </div>
+      `,
+
+      rubrica: `
+        <h2 style="font-family: var(--font-title); color: var(--purple-dark); margin-bottom: 0.5rem;">📊 Rúbrica Analítica de Exposición Oral</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem;">Prueba a seleccionar el nivel de logro del alumno/a en directo:</p>
+        
+        <div class="sim-box">
+          <div style="margin-bottom: 1.2rem;">
+            <div style="font-weight: 800; font-size: 1.15rem; margin-bottom: 8px;">Criterio 1: Claridad y Expresión Verbal</div>
+            <div class="diana-stepper">
+              <div class="diana-step" onclick="selectStep(this)">🌱 En inicio (1)</div>
+              <div class="diana-step" onclick="selectStep(this)">🌿 En progreso (2)</div>
+              <div class="diana-step selected" onclick="selectStep(this)">⭐ Conseguido (3)</div>
+              <div class="diana-step" onclick="selectStep(this)">🏆 Excelente (4)</div>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-weight: 800; font-size: 1.15rem; margin-bottom: 8px;">Criterio 2: Soporte Visual o Digital</div>
+            <div class="diana-stepper">
+              <div class="diana-step" onclick="selectStep(this)">🌱 En inicio (1)</div>
+              <div class="diana-step selected" onclick="selectStep(this)">🌿 En progreso (2)</div>
+              <div class="diana-step" onclick="selectStep(this)">⭐ Conseguido (3)</div>
+              <div class="diana-step" onclick="selectStep(this)">🏆 Excelente (4)</div>
+            </div>
+          </div>
+        </div>
+      `,
+
+      lista: `
+        <h2 style="font-family: var(--font-title); color: var(--mint-dark); margin-bottom: 0.5rem;">📋 Lista de Control de Laboratorio / Taller</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem;">Registro ágil de procedimientos y seguridad (Toca para marcar):</p>
+        
+        <div class="sim-box">
+          <div class="checklist-item checked" onclick="toggleCheck(this)">
+            <div class="custom-check">✓</div>
+            <span>1. Mantiene el espacio de trabajo limpio y ordenado</span>
+          </div>
+          <div class="checklist-item checked" onclick="toggleCheck(this)">
+            <div class="custom-check">✓</div>
+            <span>2. Sigue los pasos de la guía experimental con precaución</span>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="custom-check">✓</div>
+            <span>3. Comparte el material equitativamente con el equipo</span>
+          </div>
+          <div class="checklist-item" onclick="toggleCheck(this)">
+            <div class="custom-check">✓</div>
+            <span>4. Recoge y limpia los instrumentos al finalizar</span>
+          </div>
+        </div>
+      `,
+
+      portafolio: `
+        <h2 style="font-family: var(--font-title); color: var(--amber-dark); margin-bottom: 0.5rem;">📂 Portafolio y Cuaderno de Aprendizaje</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem;">Estructura recomendada para el dossier trimestral de evidencias:</p>
+        
+        <div class="sim-box" style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="padding: 12px; background: #ffffff; border-radius: 10px; border-left: 6px solid var(--amber-dark); font-weight: 700;">
+            1️⃣ Borrador Inicial: La primera idea antes de corregir.
+          </div>
+          <div style="padding: 12px; background: #ffffff; border-radius: 10px; border-left: 6px solid var(--mint-dark); font-weight: 700;">
+            2️⃣ Versión Mejorada: Producción tras el feedback del docente o compañeros.
+          </div>
+          <div style="padding: 12px; background: #ffffff; border-radius: 10px; border-left: 6px solid var(--blue-dark); font-weight: 700;">
+            3️⃣ Diana de Metacognición: "¿Qué he aprendido y qué me ha costado más?"
+          </div>
+        </div>
+      `,
+
+      diana: `
+        <h2 style="font-family: var(--font-title); color: var(--coral-dark); margin-bottom: 0.5rem;">🎯 Diana de Autoevaluación y Coevaluación</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.2rem;">Toca los niveles (1 al 4) para ajustar la autovaloración del equipo:</p>
+        
+        <div class="sim-box diana-container">
+          <div class="diana-row">
+            <div class="diana-label">
+              <span>🤝 Trabajo en Equipo y Escucha Activa</span>
+            </div>
+            <div class="diana-stepper">
+              <div class="diana-step" onclick="selectStep(this)">1</div>
+              <div class="diana-step" onclick="selectStep(this)">2</div>
+              <div class="diana-step" onclick="selectStep(this)">3</div>
+              <div class="diana-step selected" onclick="selectStep(this)">4 ⭐</div>
+            </div>
+          </div>
+
+          <div class="diana-row">
+            <div class="diana-label">
+              <span>⏱️ Gestión del Tiempo y Tareas</span>
+            </div>
+            <div class="diana-stepper">
+              <div class="diana-step" onclick="selectStep(this)">1</div>
+              <div class="diana-step" onclick="selectStep(this)">2</div>
+              <div class="diana-step selected" onclick="selectStep(this)">3 ⭐</div>
+              <div class="diana-step" onclick="selectStep(this)">4</div>
+            </div>
+          </div>
+
+          <div class="diana-row">
+            <div class="diana-label">
+              <span>💡 Aportación de Ideas Creativas</span>
+            </div>
+            <div class="diana-stepper">
+              <div class="diana-step" onclick="selectStep(this)">1</div>
+              <div class="diana-step" onclick="selectStep(this)">2</div>
+              <div class="diana-step" onclick="selectStep(this)">3</div>
+              <div class="diana-step selected" onclick="selectStep(this)">4 ⭐</div>
+            </div>
+          </div>
+        </div>
+      `,
+
+      anecdotario: `
+        <h2 style="font-family: var(--font-title); color: var(--teal-dark); margin-bottom: 0.5rem;">📓 Registro Anecdotario y Notas de Campo</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem;">Herramienta clave para la atención personalizada y coordinación con Orientación:</p>
+        
+        <div class="sim-box">
+          <div style="background: #ffffff; padding: 1.2rem; border-radius: 12px; border: 2px dashed #94a3b8;">
+            <div style="display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 8px; color: var(--teal-dark);">
+              <span>Fecha: 14 de Octubre</span>
+              <span>Contexto: Taller de Matemáticas Manipulativas</span>
+            </div>
+            <p style="font-size: 1.05rem; line-height: 1.5; color: #334155;">
+              <strong>Hecho observado:</strong> "Lucas resolvió de forma autónoma el reparto fraccionario usando regletas tras dos semanas con dificultades de abstracción. Apoyó a su compañera de mesa explicándole su estrategia."
+            </p>
+            <div style="margin-top: 10px; font-size: 0.95rem; font-weight: 800; color: #0f766e;">
+              🎯 Acción acordada: Reforzar el uso de material manipulativo y comunicar el avance a la familia.
+            </div>
+          </div>
+        </div>
+      `
+    };
+
+    function openModal(toolKey) {
+      playTapSound();
+      const modal = document.getElementById('toolModal');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = modalContentTemplates[toolKey] || '<p>Contenido en desarrollo</p>';
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      playTapSound();
+      document.getElementById('toolModal').classList.remove('active');
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === 'toolModal') closeModal();
+    }
+
+    function selectStep(element) {
+      playTapSound();
+      const parent = element.parentElement;
+      parent.querySelectorAll('.diana-step').forEach(s => s.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function toggleCheck(element) {
+      playTapSound();
+      element.classList.toggle('checked');
+    }
+
+    /* ==========================================================================
+       5. SECCIÓN 3: JUEGO DE EMPAREJAMIENTO (MATRIZ)
+       ========================================================================== */
+    /* Modifica aquí fácilmente las parejas de la Matriz si deseas añadir más */
+    const matrixPairs = [
+      { id: 1, situation: "Saber transferir y aplicar conocimientos a situaciones nuevas", instrument: "Prueba escrita competencial con datos y casos reales", icon: "📝" },
+      { id: 2, situation: "Expresión oral, argumentación fluida y debate", instrument: "Rúbrica de expresión oral con descriptores graduados", icon: "🗣️" },
+      { id: 3, situation: "Habilidades prácticas, seguridad y trabajo de laboratorio", instrument: "Escala de valoración y Lista de control de aula", icon: "🔬" },
+      { id: 4, situation: "Proceso de aprendizaje, borradores y evolución temporal", instrument: "Cuaderno de clase + Portafolio de evidencias", icon: "📂" },
+      { id: 5, situation: "Trabajo en equipo, roles cooperativos y clima de aula", instrument: "Diana de coevaluación y valoración entre iguales", icon: "🎯" },
+      { id: 6, situation: "Detección de necesidades específicas y hechos singulares", instrument: "Registro anecdotario docente y notas de campo", icon: "📓" }
+    ];
+
+    let selectedSituation = null;
+    let selectedInstrument = null;
+    let matchedCount = 0;
+
+    function initGame() {
+      const sitList = document.getElementById('situationsList');
+      const insList = document.getElementById('instrumentsList');
+      sitList.innerHTML = '';
+      insList.innerHTML = '';
+
+      // Orden natural para situaciones
+      matrixPairs.forEach(pair => {
+        const item = document.createElement('div');
+        item.className = 'game-card';
+        item.dataset.id = pair.id;
+        item.innerHTML = `<span>${pair.icon}</span> <span>${pair.situation}</span>`;
+        item.addEventListener('click', () => handleSituationSelect(item, pair.id));
+        sitList.appendChild(item);
+      });
+
+      // Orden desordenado aleatorio para instrumentos
+      const shuffled = [...matrixPairs].sort(() => Math.random() - 0.5);
+      shuffled.forEach(pair => {
+        const item = document.createElement('div');
+        item.className = 'game-card';
+        item.dataset.id = pair.id;
+        item.innerHTML = `<span>⚙️</span> <span>${pair.instrument}</span>`;
+        item.addEventListener('click', () => handleInstrumentSelect(item, pair.id));
+        insList.appendChild(item);
+      });
+
+      matchedCount = 0;
+      updateScore();
+    }
+
+    function handleSituationSelect(elem, id) {
+      if (elem.classList.contains('matched')) return;
+      playTapSound();
+      
+      document.querySelectorAll('#situationsList .game-card').forEach(c => c.classList.remove('selected'));
+      elem.classList.add('selected');
+      selectedSituation = { elem, id };
+
+      checkMatch();
+    }
+
+    function handleInstrumentSelect(elem, id) {
+      if (elem.classList.contains('matched')) return;
+      playTapSound();
+
+      document.querySelectorAll('#instrumentsList .game-card').forEach(c => c.classList.remove('selected'));
+      elem.classList.add('selected');
+      selectedInstrument = { elem, id };
+
+      checkMatch();
+    }
+
+    function checkMatch() {
+      if (selectedSituation && selectedInstrument) {
+        if (selectedSituation.id === selectedInstrument.id) {
+          // Acierto
+          playSuccessSound();
+          selectedSituation.elem.className = 'game-card matched';
+          selectedInstrument.elem.className = 'game-card matched';
+          matchedCount++;
+          updateScore();
+          showToast('👏 ¡Emparejamiento pedagógico perfecto!');
+
+          if (matchedCount === matrixPairs.length) {
+            setTimeout(() => {
+              triggerConfetti();
+              showToast('🏆 ¡Enhorabuena! Has dominado toda la Matriz de Evaluación');
+            }, 300);
+          }
+        } else {
+          // Error pedagógico
+          playErrorSound();
+          selectedSituation.elem.classList.add('error');
+          selectedInstrument.elem.classList.add('error');
+          
+          setTimeout(() => {
+            selectedSituation.elem.classList.remove('error', 'selected');
+            selectedInstrument.elem.classList.remove('error', 'selected');
+          }, 450);
+        }
+
+        selectedSituation = null;
+        selectedInstrument = null;
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('matchCounter').textContent = `${matchedCount} / ${matrixPairs.length}`;
+    }
+
+    function resetGame() {
+      playTapSound();
+      initGame();
+      showToast('Juego reiniciado');
+    }
+
+    /* ==========================================================================
+       6. SECCIÓN 4: ACUERDOS DE MÍNIMOS Y PONDERACIÓN
+       ========================================================================== */
+    const stampedAgreements = [false, false, false, false];
+
+    function toggleStamp(num) {
+      playTapSound();
+      const index = num - 1;
+      stampedAgreements[index] = !stampedAgreements[index];
+      const btn = document.getElementById(`stamp-${num}`);
+
+      if (stampedAgreements[index]) {
+        btn.classList.add('stamped');
+        btn.innerHTML = '<span>✅</span> Acuerdo Firmado';
+      } else {
+        btn.classList.remove('stamped');
+        btn.innerHTML = '<span>🔲</span> Sellar Compromiso';
+      }
+
+      if (stampedAgreements.every(v => v === true)) {
+        playSuccessSound();
+        triggerConfetti();
+        showToast('📜 ¡Claustro Comprometido! Todos los acuerdos han sido firmados.');
+      }
+    }
+
+    function updateWeightBar(val) {
+      const testsWeight = parseInt(val, 10);
+      const processWeight = 100 - testsWeight;
+
+      const barTests = document.getElementById('barTests');
+      const barProcess = document.getElementById('barProcess');
+      const feedback = document.getElementById('weightFeedback');
+
+      barTests.style.width = `${testsWeight}%`;
+      barTests.textContent = `Pruebas: ${testsWeight}%`;
+
+      barProcess.style.width = `${processWeight}%`;
+      barProcess.textContent = `Proceso y Productos: ${processWeight}%`;
+
+      if (testsWeight <= 50) {
+        feedback.innerHTML = '✅ ¡Distribución dentro del marco normativo del centro! (Máximo 40-50% en pruebas)';
+        feedback.style.color = 'var(--mint-dark)';
+      } else {
+        feedback.innerHTML = '⚠️ ¡Atención! Las pruebas superan el 50%. Debe prevalecer la evaluación continua de procesos.';
+        feedback.style.color = 'var(--coral-dark)';
+      }
+    }
+
+    /* ==========================================================================
+       7. ANIMACIÓN DE CONFETI EN CANVAS (Efecto Celebración Escolar)
+       ========================================================================== */
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    let confettiList = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerConfetti() {
+      confettiList = [];
+      const colors = ['#0fa47f', '#1976d2', '#f57f17', '#7b1fa2', '#e53935', '#00897b'];
+      for (let i = 0; i < 90; i++) {
+        confettiList.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 8 + 4,
+          d: Math.random() * 60 + 10,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.floor(Math.random() * 10) - 10,
+          tiltAngleIncremental: (Math.random() * 0.07) + 0.05,
+          tiltAngle: 0
+        });
+      }
+      drawConfetti();
+    }
+
+    let confettiAnimationId = null;
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let remaining = false;
+
+      confettiList.forEach((c) => {
+        c.tiltAngle += c.tiltAngleIncremental;
+        c.y += (Math.cos(c.d) + 3 + c.r / 2) * 1.5;
+        c.tilt = Math.sin(c.tiltAngle - (c.r / 3)) * 15;
+
+        if (c.y <= canvas.height) {
+          remaining = true;
+          ctx.beginPath();
+          ctx.lineWidth = c.r / 1.5;
+          ctx.strokeStyle = c.color;
+          ctx.moveTo(c.x + c.tilt + (c.r / 4), c.y);
+          ctx.lineTo(c.x + c.tilt, c.y + c.tilt + (c.r / 4));
+          ctx.stroke();
+        }
+      });
+
+      if (remaining) {
+        confettiAnimationId = requestAnimationFrame(drawConfetti);
+      } else {
+        cancelAnimationFrame(confettiAnimationId);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // Inicialización al cargar la ventana
+    window.onload = function() {
+      initGame();
+    };
+  </script>
+</body>
+</html>
